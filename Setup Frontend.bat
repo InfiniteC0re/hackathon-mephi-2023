@@ -1,4 +1,5 @@
 @echo off
 cd ./frontend
-yarn
+call npm i -g yarn
+call yarn
 pause
