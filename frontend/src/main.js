@@ -1,9 +1,12 @@
 import { createApp } from 'vue';
-import './style.css';
+import { createRouter, createWebHistory } from 'vue-router';
+
+import createStore from "./store"
+
 import App from './App.vue';
 import Home from '@/views/Home.vue';
 
-import { createRouter, createWebHistory } from 'vue-router';
+import './style.css';
 
 const router = createRouter({
     history: createWebHistory(),
@@ -12,4 +15,4 @@ const router = createRouter({
     ]
 });
 
-createApp(App).use(router).mount('#app');
+createApp(App).use(router).use(createStore()).mount('#app');
