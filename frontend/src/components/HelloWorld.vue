@@ -1,4 +1,6 @@
 <script>
+import API from "../utils/api"
+
 export default {
   props: {
     msg: String
@@ -7,6 +9,15 @@ export default {
     count() {
       return this.$store.state.count;
     }
+  },
+  mounted() {
+    API.GetTest().then(res => {
+      console.log(res.data);
+
+      API.PostTest().then(res => {
+        console.log(res.data);
+      });
+    });
   }
 }
 </script>
@@ -24,9 +35,8 @@ export default {
 
   <p>
     Check out
-    <a href="https://vuejs.org/guide/quick-start.html#local" target="_blank"
-      >create-vue</a
-    >, the official Vue + Vite starter
+    <a href="https://vuejs.org/guide/quick-start.html#local" target="_blank">create-vue</a>, the official Vue + Vite
+    starter
   </p>
   <p>
     Install
