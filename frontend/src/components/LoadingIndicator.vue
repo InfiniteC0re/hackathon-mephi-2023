@@ -9,7 +9,7 @@ export default {};
 <style lang="scss" scoped>
 .loader {
     color: rgba(255, 255, 255, .3);
-    font-size: 15px;
+    font-size: 12px;
     width: 1em;
     height: 1em;
     border-radius: 50%;

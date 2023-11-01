@@ -7,12 +7,11 @@ export default () => {
     return createStore({
         state() {
             return {
-                count: 0,
                 authToken: session.getAuthToken(),
                 isAuthorized: false,
                 statuses: [],
                 tasks: [],
-                gotStatuses: false
+                gotStatuses: false,
             }
         },
         mutations: {
@@ -55,6 +54,9 @@ export default () => {
             logout(state, obj) {
                 if (obj.callback) {
                     state.isAuthorized = false;
+                    state.gotStatuses = false;
+                    state.statuses = [];
+                    state.tasks = [];
                     session.clear();
                     obj.callback();
                 }
