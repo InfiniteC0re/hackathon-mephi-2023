@@ -14,6 +14,10 @@
   -webkit-text-size-adjust: 100%;
 }
 
+input {
+  font-family: 'Rubik', system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
 * {
   padding: 0;
   margin: 0;
