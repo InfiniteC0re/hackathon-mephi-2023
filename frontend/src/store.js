@@ -11,6 +11,7 @@ export default () => {
                 authToken: session.getAuthToken(),
                 isAuthorized: false,
                 statuses: [],
+                tasks: [],
                 gotStatuses: false
             }
         },
@@ -20,14 +21,10 @@ export default () => {
             },
             getStatuses(state, obj) {
                 state.gotStatuses = false;
-                
+
                 API.GetStatuses(state.authToken).then(async res => {
                     state.statuses = res.data;
-
-                    for (let i = 0; i < state.statuses.length; i++) {
-                        state.statuses[i].tasks = (await API.GetTasksByStatus(state.authToken, state.statuses[i].status_en)).data;
-                    }
-
+                    state.tasks = (await API.GetTasks(state.authToken)).data;
                     state.gotStatuses = true;
                 })
             },

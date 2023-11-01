@@ -3,7 +3,10 @@
         <h1>Заголовок</h1>
 
         <div class="profile" v-if="isAuthorized">
-            <button @click="logout">Выход</button>
+            <button @click="logout">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Выход
+            </button>
         </div>
     </div>
 </template>
@@ -46,9 +49,11 @@ export default {
         text-align: left;
 
         button {
-            background: rgba(0, 0, 0, 0.5);
-            // color: #000;
             font-weight: bold;
+
+            i {
+                margin-right: 8px;
+            }
         }
     }
 }

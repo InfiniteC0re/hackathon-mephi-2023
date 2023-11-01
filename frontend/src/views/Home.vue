@@ -1,6 +1,6 @@
 <template>
     <div class="cards-wrap" v-if="gotStatuses">
-        <TasksCard v-for="status in statuses" :caption="status.status_ru" :tasks="status.tasks" />
+        <TasksCard v-for="status in statuses" :caption="status.status_ru" :filter="(task) => task.status.id == status.id" />
     </div>
     <div class="loading-wrap" v-else>
         <LoadingIndicator />

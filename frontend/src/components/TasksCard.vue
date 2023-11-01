@@ -20,7 +20,12 @@
 export default {
     props: {
         caption: String,
-        tasks: Object,
+        filter: Function
+    },
+    computed: {
+        tasks() {
+            return this.$store.state.tasks.filter(this.filter);
+        }
     },
     methods: {
         getPerformerText(task) {
@@ -79,11 +84,12 @@ export default {
 
         span {
             padding: 2px 6px;
-            font-size: 0.9rem;
+            font-size: 0.5rem;
             font-weight: 400;
             border-radius: 9999px;
             background: rgba(255, 255, 255, .2);
             margin-left: 4px;
+            height: 100%;
         }
     }
 

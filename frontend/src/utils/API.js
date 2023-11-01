@@ -36,4 +36,5 @@ export default {
     CheckToken: async (token) => await _requestPOST(ENDPOINTS.API1.TOKEN_CHECK(), null, _generateAuthHeaders(token)),
     GetTasksByStatus: async (token, status) => await _requestGET(ENDPOINTS.API1.TASKS_STATUS(status), _generateAuthHeaders(token)),
     GetStatuses: async (token) => await _requestGET(ENDPOINTS.API1.STATUSES(), _generateAuthHeaders(token)),
+    GetTasks: async (token) => await _requestGET(ENDPOINTS.API1.TASKS(), _generateAuthHeaders(token)),
 }
