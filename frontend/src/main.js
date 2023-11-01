@@ -7,6 +7,8 @@ import App from './App.vue';
 import Home from '@/views/Home.vue';
 import Login from '@/views/Login.vue';
 
+
+
 import './style.css';
 
 const router = createRouter({
