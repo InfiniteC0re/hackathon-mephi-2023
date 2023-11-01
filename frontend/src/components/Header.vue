@@ -1,8 +1,12 @@
 <template>
     <div class="header-wrap">
-        <h1>Название программы</h1>
+        <h1>Задачник</h1>
 
         <div class="profile" v-if="isAuthorized">
+            <button @click="refresh">
+                <i class="fa-solid fa-arrows-rotate"></i>
+                Обновить
+            </button>
             <button @click="logout">
                 <i class="fa-solid fa-right-from-bracket"></i>
                 Выход
@@ -19,6 +23,9 @@ export default {
         }
     },
     methods: {
+        refresh() {
+            this.$store.commit('getStatuses');
+        },
         logout() {
             this.$store.commit('logout', {
                 callback: () => {
@@ -46,6 +53,8 @@ export default {
     }
 
     .profile {
+        display: flex;
+        gap: 8px;
         margin-left: auto;
         text-align: left;
 
