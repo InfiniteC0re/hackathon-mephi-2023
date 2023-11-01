@@ -1,6 +1,11 @@
 <template>
     <div class="cards-wrap" v-if="gotStatuses">
-        <TasksCard v-for="status in statuses" :caption="status.status_ru" :filter="(task) => task.status.id == status.id" />
+        <TasksCard v-for="status in statuses"
+            :canAddNew="status.status_en == 'created'"
+            :canDelete="status.status_en != 'executed'"
+            :caption="status.status_ru"
+            :filter="(task) => task.status.id == status.id"
+        />
     </div>
     <div class="loading-wrap" v-else>
         <LoadingIndicator />

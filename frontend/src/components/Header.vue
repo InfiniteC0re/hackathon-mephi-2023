@@ -34,6 +34,7 @@ export default {
 .header-wrap {
     width: 100%;
     height: 70px;
+    min-height: 70px;
     display: flex;
     padding: 0 32px;
     background: var(--panel-color);

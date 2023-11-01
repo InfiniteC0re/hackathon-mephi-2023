@@ -2,8 +2,14 @@
     <div class="view-wrap">
         <form class="auth-form" v-on:submit.prevent>
             <h1>Авторизация</h1>
-            <input placeholder="Логин" v-model="login" type="text">
-            <input placeholder="Пароль" v-model="password" type="password">
+            <div class="input-wrap">
+                <p>Логин</p>
+                <input placeholder="Логин" v-model="login" type="text">
+            </div>
+            <div class="input-wrap">
+                <p>Пароль</p>
+                <input placeholder="Пароль" v-model="password" type="password">
+            </div>
             <button @click="submitForm" :disabled="isLoginButtonDisabled">Войти</button>
             <span class="error">{{ error }}</span>
         </form>
@@ -64,6 +70,7 @@ export default {
 <style lang="scss" scoped>
 .view-wrap {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100%;
@@ -82,13 +89,37 @@ export default {
             margin-bottom: 8px;
         }
 
-        input {
-            outline: none;
-            border: 0;
-            padding: 10px;
-            font-weight: bold;
-            border-radius: 4px;
-            // height: 20px;
+        .input-wrap {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+
+            p {
+                // position: absolute;
+                // left: 8px;
+                // top: -16px;
+                line-height: 28px;
+                text-align: left;
+                font-weight: 100;
+                opacity: 0.8;
+            }
+
+            input {
+                outline: none;
+                border: 0;
+                padding: 10px;
+                font-weight: bold;
+                font-size: 1rem;
+                border-radius: 4px;
+                background: var(--button-color);
+                border: 1px solid rgba(255, 255, 255, .12);
+                transition: border-color 0.25s;
+                opacity: 1.0;
+
+                &:focus {
+                    border-color: var(--button-active-color);
+                }
+            }
         }
 
         .error {
@@ -99,10 +130,9 @@ export default {
 
     .quick-login {
         display: flex;
-        flex-direction: column;
+        margin-top: 12px;
         gap: 8px;
         padding: 8px;
-        margin-left: 24px;
         background: rgba(0, 0, 0, 0.1);
         border: 1px solid rgba(255, 255, 255, .15);
         border-radius: 8px;
