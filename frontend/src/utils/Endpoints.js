@@ -6,6 +6,6 @@ export default {
         TEST: () => BASE_ADDRESS1 + "/test"
     },
     API2: {
-
+        
     }
 }

@@ -25,6 +25,8 @@ async function _requestPOST(url, data = {}) {
     });
 }
 
+
+
 export default {
     GetTest: async () => await _requestGET(ENDPOINTS.API1.TEST()),
     PostTest: async () => await _requestPOST(ENDPOINTS.API1.TEST())

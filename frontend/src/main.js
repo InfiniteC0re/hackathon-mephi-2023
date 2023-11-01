@@ -6,12 +6,14 @@ import createStore from "./store"
 import App from './App.vue';
 import Home from '@/views/Home.vue';
 
+
+
 import './style.css';
 
 const router = createRouter({
     history: createWebHistory(),
     routes: [
-        { path: "/", name: "Home", component: Home }
+        { path: "/", name: "Home", component: Home },
     ]
 });
 
