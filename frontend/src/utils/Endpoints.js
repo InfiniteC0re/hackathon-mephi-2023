@@ -3,7 +3,10 @@ const BASE_ADDRESS2 = "http://hackathon.hlsr.tk:8000"; // TODO: replace ip befor
 
 export default {
     API1: {
-        TEST: () => BASE_ADDRESS1 + "/test"
+        TEST: () => BASE_ADDRESS1 + "/test",
+        TOKEN: () => BASE_ADDRESS1 + "/api/token",
+        TOKEN_CHECK: () => BASE_ADDRESS1 + "/api/token/check",
+        TASK: () => BASE_ADDRESS1 + "/tasks"
     },
     API2: {
         

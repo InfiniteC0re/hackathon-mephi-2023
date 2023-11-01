@@ -11,13 +11,7 @@ export default {
     }
   },
   mounted() {
-    API.GetTest().then(res => {
-      console.log(res.data);
-
-      API.PostTest().then(res => {
-        console.log(res.data);
-      });
-    });
+    
   }
 }
 </script>

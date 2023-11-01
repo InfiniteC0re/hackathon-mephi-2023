@@ -11,8 +11,32 @@
 
 </template>
 
+<<<<<<< HEAD
 <script setup>
 import HelloWorld from '@/components/HelloWorld.vue'
+=======
+<script>
+import HelloWorld from '@/components/HelloWorld.vue';
+
+export default {
+    components: {
+        HelloWorld
+    },
+    mounted() {
+        let redirectToLogin = !this.$store.state.authToken;
+
+        if (!redirectToLogin) {
+            this.$store.commit('checkToken', {
+                callbackError: () => {
+                    this.$router.push("/login");
+                }
+            });
+        } else {
+            this.$router.push("/login");
+        }
+    }
+}
+>>>>>>> 49d1784564fcc9ddca4f5621696c56f35969931a
 
 </script>
 

@@ -7,9 +7,9 @@ async function _makeRequestGET(url) {
     });
 }
 
-async function _makeRequestPOST(url, data) {
+async function _makeRequestPOST(url, data, headers) {
     return new Promise((resolve, reject) => {
-        axios.post(url, data).then(resolve).catch(reject);
+        axios.post(url, data, { headers }).then(resolve).catch(reject);
     });
 }
 
@@ -19,15 +19,19 @@ async function _requestGET(url) {
     });
 }
 
-async function _requestPOST(url, data = {}) {
+async function _requestPOST(url, data = {}, headers = {}) {
     return new Promise((resolve, reject) => {
-        _makeRequestPOST(url, data).then(resolve).catch(reject);
+        _makeRequestPOST(url, data, headers).then(resolve).catch(reject);
     });
 }
 
-
+function _generateAuthHeaders(token) {
+    return { Authorization: `Token ${token}` };
+}
 
 export default {
     GetTest: async () => await _requestGET(ENDPOINTS.API1.TEST()),
-    PostTest: async () => await _requestPOST(ENDPOINTS.API1.TEST())
+    PostTest: async () => await _requestPOST(ENDPOINTS.API1.TEST()),
+    CreateToken: async (username, password) => await _requestPOST(ENDPOINTS.API1.TOKEN(), { username, password }),
+    CheckToken: async (token) => await _requestPOST(ENDPOINTS.API1.TOKEN_CHECK(), null, _generateAuthHeaders(token)),
 }
