@@ -10,8 +10,26 @@
     <HelloWorld msg="Vite + Vue" />
 </template>
 
-<script setup>
-import HelloWorld from '@/components/HelloWorld.vue'
+<script>
+import HelloWorld from '@/components/HelloWorld.vue';
+
+export default {
+    components: {
+        HelloWorld
+    },
+    mounted() {
+        let redirectToLogin = !this.$store.state.authToken;
+
+        if (!redirectToLogin) {
+            this.$store.commit('checkToken', {
+                callbackError: () => {
+                    this.$router.push("/login");
+                }
+            });
+        }
+    }
+}
+
 </script>
 
 <style lang="scss" scoped>
