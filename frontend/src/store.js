@@ -8,7 +8,8 @@ export default () => {
         state() {
             return {
                 count: 0,
-                authToken: session.getAuthToken()
+                authToken: session.getAuthToken(),
+                isAuthorized: false
             }
         },
         mutations: {
@@ -18,8 +19,10 @@ export default () => {
             setAuthentication(state, obj) {
                 if (obj) {
                     state.authToken = obj.token;
+                    state.isAuthorized = true;
                     session.setAuthentication(obj.token, obj.user_id);
                 } else {
+                    state.isAuthorized = false;
                     state.authToken = null;
                     session.clear();
                 }
@@ -27,13 +30,22 @@ export default () => {
             checkToken(state, obj) {
                 API.CheckToken(state.authToken).then(res => {
                     if (obj.callbackSuccess) {
+                        state.isAuthorized = true;
                         obj.callbackSuccess();
                     }
                 }).catch(err => {
                     if (obj.callbackError) {
+                        state.isAuthorized = false;
                         obj.callbackError();
                     }
                 });
+            },
+            logout(state, obj) {
+                if (obj.callback) {
+                    state.isAuthorized = false;
+                    session.clear();
+                    obj.callback();
+                }
             }
         },
     });

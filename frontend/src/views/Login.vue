@@ -9,7 +9,7 @@
         </form>
 
         <!-- Кнопки для быстрого ввода логинов/паролей -->
-        <div class="cheats">
+        <div class="quick-login">
             <button @click="fillCredentials('Team 5.0', '0U1gjAk4IG')">Team 5.0</button>
             <button @click="fillCredentials('Team 5.1', '0U1gjAk4IG')">Team 5.1</button>
             <button @click="fillCredentials('Team 5.2', '0U1gjAk4IG')">Team 5.2</button>
@@ -54,12 +54,8 @@ export default {
         }
     },
     mounted() {
-        if (this.$store.state.authToken) {
-            this.$store.commit('checkToken', {
-                callbackSuccess: () => {
-                    this.$router.push("/");
-                }
-            });
+        if (this.$store.state.isAuthorized) {
+            this.$router.push("/");
         }
     }
 }
@@ -101,7 +97,7 @@ export default {
         }
     }
 
-    .cheats {
+    .quick-login {
         display: flex;
         flex-direction: column;
         gap: 8px;
