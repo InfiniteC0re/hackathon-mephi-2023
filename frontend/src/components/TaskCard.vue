@@ -1,5 +1,5 @@
 <template>
-    <div class="card" @click.self="menu = false" :class="{ 'backdrop': menu }">
+    <div class="card" @click.self="menu = 0" :class="{ 'backdrop': menu }">
         <div class="header">
             <h4 :title="task.title" class="title">{{ task.title }}</h4>
         </div>
@@ -10,12 +10,29 @@
                 <p class="date" v-for="text in getDateTexts(task)">{{ text }}</p>
             </div>
         </div>
-        <div class="menu-button" @click="menu = canDelete" v-if="canDelete">
-            <i class="fa-solid fa-ellipsis-vertical"></i>
+        <div class="menu-buttons">
+            <div class="menu-button" @click="menu = 2" v-if="canAssign">
+                <i class="fa-solid fa-user"></i>
+            </div>
+            <div class="menu-button" @click="menu = 1" v-if="canDelete">
+                <i class="fa-solid fa-ellipsis-vertical"></i>
+            </div>
         </div>
-        <div class="menu" v-if="menu">
+        <div class="menu users" v-if="menu == 2">
+            <div class="list-wrap">
+                <div class="selected" @click="listOpened = true">
+                    <div class="text">{{ performer }}</div>
+                    <div class="icon"><i class="fa-solid fa-caret-down"></i></div>
+                </div>
+                <div class="list" v-if="listOpened">
+                    <div class="entry" v-for="(person, index) in personal" @click="() => { selectedPerformer = index; listOpened = false; }">{{ person.first_name }} {{ person.second_name }}</div>
+                </div>
+            </div>
+            <button @click="setPerformer">ОК</button>
+        </div>
+        <div class="menu" v-else-if="menu == 1">
             <button @click="deleteCard">Удалить</button>
-            <button @click="menu = false">Отмена</button>
+            <button @click="menu = 0">Отмена</button>
         </div>
     </div>
 </template>
@@ -23,15 +40,31 @@
 <script>
 export default {
     data: () => ({
-        menu: false
+        menu: 0,
+        selectedPerformer: -1,
+        listOpened: false
     }),
+    computed: {
+        performer() {
+            if (this.selectedPerformer >= 0) {
+                let obj = this.$store.state.personal[this.selectedPerformer];
+                return `${obj.first_name} ${obj.second_name}`;
+            } else {
+                return "Никто";
+            }
+        },
+        personal() {
+            return this.$store.state.personal;
+        }
+    },
     props: {
         task: Object,
-        canDelete: Boolean
+        canDelete: Boolean,
+        canAssign: Boolean,
     },
     methods: {
         deleteCard() {
-            this.menu = false;
+            this.menu = 0;
             this.$store.commit("openOverlay", {
                 caption: "Удалить?",
                 closeCallback: (result) => {
@@ -40,6 +73,12 @@ export default {
                     }
                 }
             });
+        },
+        setPerformer() {
+            if (this.selectedPerformer != -1) {
+                this.$store.commit("taskAssign", { personal: this.personal[this.selectedPerformer].id, task: this.task.id });
+            }
+            this.menu = 0;
         },
         getPerformerText(task) {
             if (task.executed_ts) {
@@ -104,6 +143,10 @@ export default {
         z-index: 9998;
     }
 
+    &.backdrop {
+        min-height: 200px;
+    }
+
     &.backdrop::after {
         opacity: 1;
         pointer-events: all;
@@ -118,6 +161,64 @@ export default {
         gap: 8px;
         flex-direction: column;
         z-index: 9999;
+
+        &.users {
+            flex-direction: row;
+        }
+
+        .list-wrap {
+            position: relative;
+            display: flex;
+            width: 200px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            box-sizing: border-box;
+            background: var(--button-color);
+            border: 1px solid rgba(255, 255, 255, .2);
+            border-radius: 8px;
+            z-index: 9999;
+
+            .selected {
+                margin: 0 12px;
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+            }
+
+            .list {
+                display: flex;
+                flex-direction: column;
+                font-size: 0.9rem;
+                max-height: 100px;
+                overflow: auto;
+                position: absolute;
+                background: rgb(18, 20, 31);
+                padding: 4px 0;
+                width: 100%;
+                top: -1px;
+                left: -1px;
+                padding-right: 4px;
+
+                .entry {
+                    display: flex;
+                    align-items: center;
+                    padding: 8px;
+                    box-sizing: border-box;
+                    background: rgb(29, 33, 51);
+                    font-weight: 100;
+                    transition: 0.1s;
+
+                    &:hover {
+                        letter-spacing: 0.5px;
+                    }
+
+                    &:nth-child(2n) {
+                        background: rgb(36, 42, 63);
+                    }
+                }
+            }
+        }
 
         button {
             font-size: 0.9rem;
@@ -169,28 +270,33 @@ export default {
         font-size: 1rem;
     }
 
-    .menu-button {
+    .menu-buttons {
+        display: flex;
+        gap: 8px;
         position: absolute;
         right: 0;
         bottom: 0;
         margin: 8px;
-        height: 28px;
-        width: 28px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 50%;
-        transition: 0.25s;
-        color: rgba(255, 255, 255, .5);
 
-        &:hover {
-            color: #fff;
-            background: rgba(255, 255, 255, .1);
-        }
+        .menu-button {
+            height: 28px;
+            width: 28px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            transition: 0.25s;
+            color: rgba(255, 255, 255, .5);
 
-        &:active {
-            transform: scale(1.1);
-            background: rgba(255, 255, 255, .2);
+            &:hover {
+                color: #fff;
+                background: rgba(255, 255, 255, .1);
+            }
+
+            &:active {
+                transform: scale(1.1);
+                background: rgba(255, 255, 255, .2);
+            }
         }
     }
 }

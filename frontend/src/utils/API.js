@@ -39,5 +39,7 @@ export default {
     GetTasksByStatus: async (token, status) => await _requestGET(ENDPOINTS.API1.TASKS_STATUS(status), _generateAuthHeaders(token)),
     GetStatuses: async (token) => await _requestGET(ENDPOINTS.API1.STATUSES(), _generateAuthHeaders(token)),
     GetTasks: async (token) => await _requestGET(ENDPOINTS.API1.TASKS(), _generateAuthHeaders(token)),
+    GetPersonal: async (token) => await _requestGET(ENDPOINTS.API1.PERSONAL(), _generateAuthHeaders(token)),
+    TaskAssign: async (token, personal_id, task_id) => await _requestPOST(ENDPOINTS.API1.TASK_ASSIGN(), { personal_id, task_id }, _generateAuthHeaders(token)),
     Logout: async (token) => await _requestPOST(ENDPOINTS.API1.LOGOUT(), null, _generateAuthHeaders(token)),
 }

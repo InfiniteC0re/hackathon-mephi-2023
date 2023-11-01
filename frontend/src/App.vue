@@ -134,7 +134,7 @@ export default {
         margin-left: 4px;
         opacity: 0.8;
       }
-      
+
       input {
         font-weight: 400;
         outline: none;

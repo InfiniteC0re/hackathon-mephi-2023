@@ -21,6 +21,7 @@ export default () => {
                 isAuthorized: false,
                 statuses: [],
                 tasks: [],
+                personal: [],
                 gotStatuses: false,
                 overlay: {}
             }
@@ -29,8 +30,18 @@ export default () => {
             getStatuses(state, obj) {
                 fetchTasks(state, obj);
             },
+            getPersonal(state, obj) {
+                API.GetPersonal(state.authToken).then((res) => {
+                    state.personal = res.data;
+                });
+            },
             createTask(state, obj) {
                 API.CreateTask(state.authToken, obj.title, obj.description).then((res) => {
+                    fetchTasks(state, obj);
+                });
+            },
+            taskAssign(state, obj) {
+                API.TaskAssign(state.authToken, obj.personal, obj.task).then((res) => {
                     fetchTasks(state, obj);
                 });
             },

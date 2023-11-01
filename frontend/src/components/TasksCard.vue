@@ -26,7 +26,7 @@
             </div>
         </div>
         <div class="cards" ref="cards" :class="{ 'scroll': hasScroll }">
-            <TaskCard v-for="task in tasks" @click="() => { console.log(task) }" :task="task" :canDelete="canDelete" />
+            <TaskCard v-for="task in tasks" :task="task" :canDelete="canDelete" :canAssign="canAddNew" />
         </div>
     </div>
 </template>

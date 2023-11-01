@@ -39,6 +39,7 @@ export default {
                 },
                 callbackSuccess: () => {
                     this.$store.commit('getStatuses');
+                    this.$store.commit('getPersonal');
                 }
             });
         } else {
