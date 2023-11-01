@@ -3,6 +3,16 @@ import API from "./utils/api";
 
 import { createStore } from 'vuex';
 
+function fetchTasks(state, obj) {
+    state.gotStatuses = false;
+
+    API.GetStatuses(state.authToken).then(async res => {
+        state.statuses = res.data;
+        state.tasks = (await API.GetTasks(state.authToken)).data;
+        state.gotStatuses = true;
+    })
+}
+
 export default () => {
     return createStore({
         state() {
@@ -12,20 +22,22 @@ export default () => {
                 statuses: [],
                 tasks: [],
                 gotStatuses: false,
+                overlay: {}
             }
         },
         mutations: {
-            increment(state) {
-                state.count++
-            },
             getStatuses(state, obj) {
-                state.gotStatuses = false;
-
-                API.GetStatuses(state.authToken).then(async res => {
-                    state.statuses = res.data;
-                    state.tasks = (await API.GetTasks(state.authToken)).data;
-                    state.gotStatuses = true;
-                })
+                fetchTasks(state, obj);
+            },
+            createTask(state, obj) {
+                API.CreateTask(state.authToken, obj.title, obj.description).then((res) => {
+                    fetchTasks(state, obj);
+                });
+            },
+            deleteTask(state, obj) {
+                API.DeleteTask(state.authToken, obj.id).then((res) => {
+                    fetchTasks(state, obj);
+                });
             },
             setAuthentication(state, obj) {
                 if (obj) {
@@ -52,14 +64,20 @@ export default () => {
                 });
             },
             logout(state, obj) {
-                if (obj.callback) {
-                    state.isAuthorized = false;
-                    state.gotStatuses = false;
-                    state.statuses = [];
-                    state.tasks = [];
-                    session.clear();
-                    obj.callback();
-                }
+                API.Logout(state.authToken).then(res => {
+                    if (obj.callback) {
+                        state.isAuthorized = false;
+                        state.gotStatuses = false;
+                        state.statuses = [];
+                        state.tasks = [];
+                        session.clear();
+                        obj.callback();
+                    }
+                });
+            },
+            openOverlay(state, obj) {
+                state.overlay = obj;
+                state.overlay.visible = true;
             }
         },
     });

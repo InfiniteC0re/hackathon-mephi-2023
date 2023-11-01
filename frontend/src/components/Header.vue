@@ -1,6 +1,6 @@
 <template>
     <div class="header-wrap">
-        <h1>Заголовок</h1>
+        <h1>Название программы</h1>
 
         <div class="profile" v-if="isAuthorized">
             <button @click="logout">

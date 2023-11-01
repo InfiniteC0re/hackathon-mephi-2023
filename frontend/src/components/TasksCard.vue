@@ -4,7 +4,7 @@
             <div class="title">
                 <h3>{{ caption }} <span>{{ tasks.length }}</span></h3>
                 <div class="buttons">
-                    <button v-if="canAddNew"><i class="fa-solid fa-plus"></i></button>
+                    <button v-if="canAddNew" @click="addNewTask"><i class="fa-solid fa-plus"></i></button>
                     <button @click="showFilters = !showFilters" :class="{ 'active': showFilters }">
                         <i class="fa-solid fa-filter"></i>
                     </button>
@@ -51,6 +51,35 @@ export default {
         sortOrder: 0,
         searchPrompt: ""
     }),
+    methods: {
+        addNewTask() {
+            this.$store.commit("openOverlay", {
+                caption: "Добавление задания",
+                closeCallback: (result) => {
+                    if (result == 0) {
+                        let fields = this.$store.state.overlay.fields;
+
+                        if (fields[0].value != "" && fields[1].value != "") {
+                            this.$store.commit('createTask', {
+                                title: fields[0].value,
+                                description: fields[1].value,
+                            });
+                        }
+                    }
+                },
+                fields: [{
+                    hint: "Название задачи",
+                    placeholder: "Название",
+                    value: ""
+                },
+                {
+                    hint: "Описание задачи",
+                    placeholder: "Описание",
+                    value: ""
+                }]
+            });
+        }
+    },
     computed: {
         tasks() {
             return this.$store.state.tasks.filter((task) => {

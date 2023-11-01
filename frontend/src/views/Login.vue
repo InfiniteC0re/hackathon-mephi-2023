@@ -95,9 +95,6 @@ export default {
             flex-direction: column;
 
             p {
-                // position: absolute;
-                // left: 8px;
-                // top: -16px;
                 line-height: 28px;
                 text-align: left;
                 font-weight: 100;

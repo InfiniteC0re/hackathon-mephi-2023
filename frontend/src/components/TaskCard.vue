@@ -31,7 +31,15 @@ export default {
     },
     methods: {
         deleteCard() {
-
+            this.menu = false;
+            this.$store.commit("openOverlay", {
+                caption: "Удалить?",
+                closeCallback: (result) => {
+                    if (result == 0) {
+                        this.$store.commit("deleteTask", { id: this.task.id });
+                    }
+                }
+            });
         },
         getPerformerText(task) {
             if (task.executed_ts) {
@@ -113,6 +121,8 @@ export default {
 
         button {
             font-size: 0.9rem;
+            height: 30px;
+            padding: 0 16px;
         }
     }
 
