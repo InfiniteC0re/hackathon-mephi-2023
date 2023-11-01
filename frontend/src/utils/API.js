@@ -1,9 +1,9 @@
 import ENDPOINTS from "./endpoints";
 import axios from "axios";
 
-async function _makeRequestGET(url) {
+async function _makeRequestGET(url, headers) {
     return new Promise((resolve, reject) => {
-        axios.get(url).then(resolve).catch(reject);
+        axios.get(url, { headers }).then(resolve).catch(reject);
     });
 }
 
@@ -13,9 +13,9 @@ async function _makeRequestPOST(url, data, headers) {
     });
 }
 
-async function _requestGET(url) {
+async function _requestGET(url, headers = {}) {
     return new Promise((resolve, reject) => {
-        _makeRequestGET(url).then(resolve).catch(reject);
+        _makeRequestGET(url, headers).then(resolve).catch(reject);
     });
 }
 
@@ -34,4 +34,6 @@ export default {
     PostTest: async () => await _requestPOST(ENDPOINTS.API1.TEST()),
     CreateToken: async (username, password) => await _requestPOST(ENDPOINTS.API1.TOKEN(), { username, password }),
     CheckToken: async (token) => await _requestPOST(ENDPOINTS.API1.TOKEN_CHECK(), null, _generateAuthHeaders(token)),
+    GetTasksByStatus: async (token, status) => await _requestGET(ENDPOINTS.API1.TASKS_STATUS(status), _generateAuthHeaders(token)),
+    GetStatuses: async (token) => await _requestGET(ENDPOINTS.API1.STATUSES(), _generateAuthHeaders(token)),
 }

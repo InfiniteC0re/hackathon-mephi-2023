@@ -1,9 +1,9 @@
 <template>
-  <div class="wrap-content" v-if="isReady">
+  <div class="content-wrap" v-if="isReady">
     <Header />
     <router-view></router-view>
   </div>
-  <div class="wrap-loading" v-else>
+  <div class="loading-wrap" v-else>
     <LoadingIndicator/>
   </div>
 </template>
@@ -40,13 +40,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.wrap-content {
+.content-wrap {
   width: 100vw;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
-.wrap-loading {
-  width: 100vw;
-  height: 100vh;
+
+.loading-wrap {
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;

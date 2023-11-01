@@ -9,12 +9,27 @@ export default () => {
             return {
                 count: 0,
                 authToken: session.getAuthToken(),
-                isAuthorized: false
+                isAuthorized: false,
+                statuses: [],
+                gotStatuses: false
             }
         },
         mutations: {
             increment(state) {
                 state.count++
+            },
+            getStatuses(state, obj) {
+                state.gotStatuses = false;
+                
+                API.GetStatuses(state.authToken).then(async res => {
+                    state.statuses = res.data;
+
+                    for (let i = 0; i < state.statuses.length; i++) {
+                        state.statuses[i].tasks = (await API.GetTasksByStatus(state.authToken, state.statuses[i].status_en)).data;
+                    }
+
+                    state.gotStatuses = true;
+                })
             },
             setAuthentication(state, obj) {
                 if (obj) {

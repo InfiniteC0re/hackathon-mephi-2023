@@ -6,7 +6,9 @@ export default {
         TEST: () => BASE_ADDRESS1 + "/test",
         TOKEN: () => BASE_ADDRESS1 + "/api/token",
         TOKEN_CHECK: () => BASE_ADDRESS1 + "/api/token/check",
-        TASK: () => BASE_ADDRESS1 + "/tasks"
+        TASKS: () => BASE_ADDRESS1 + "/tasks",
+        TASKS_STATUS: (status) => BASE_ADDRESS1 + "/tasks/" + status,
+        STATUSES: () => BASE_ADDRESS1 + "/statuses"
     },
     API2: {
         

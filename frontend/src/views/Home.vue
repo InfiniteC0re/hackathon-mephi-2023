@@ -1,12 +1,28 @@
 <template>
-    
+    <div class="cards-wrap" v-if="gotStatuses">
+        <TasksCard v-for="status in statuses" :caption="status.status_ru" :tasks="status.tasks" />
+    </div>
+    <div class="loading-wrap" v-else>
+        <LoadingIndicator />
+    </div>
 </template>
 
 <script>
+import LoadingIndicator from '../components/LoadingIndicator.vue';
+import TasksCard from '../components/TasksCard.vue';
 
 export default {
     components: {
-        
+        LoadingIndicator,
+        TasksCard
+    },
+    computed: {
+        statuses() {
+            return this.$store.state.statuses;
+        },
+        gotStatuses() {
+            return this.$store.state.gotStatuses;
+        }
     },
     mounted() {
         let redirectToLogin = !this.$store.state.authToken;
@@ -15,6 +31,9 @@ export default {
             this.$store.commit('checkToken', {
                 callbackError: () => {
                     this.$router.push("/login");
+                },
+                callbackSuccess: () => {
+                    this.$store.commit('getStatuses');
                 }
             });
         } else {
@@ -26,18 +45,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-    transition: filter 300ms;
-
-    &:hover {
-        filter: drop-shadow(0 0 2em #646cffaa);
-    }
-
-    &.vue:hover {
-        filter: drop-shadow(0 0 2em #42b883aa);
-    }
+.cards-wrap {
+    display: flex;
+    gap: 8px;
+    max-height: 100%;
+    overflow-y: hidden;
+    overflow-x: auto;
+    margin: 16px;
+    padding-bottom: 8px;
+    height: 100%;
 }
 </style>
