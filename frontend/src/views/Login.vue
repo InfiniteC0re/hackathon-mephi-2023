@@ -13,15 +13,6 @@
             <button @click="submitForm" :disabled="isLoginButtonDisabled">Войти</button>
             <span class="error">{{ error }}</span>
         </form>
-
-        <!-- Кнопки для быстрого ввода логинов/паролей -->
-        <div class="quick-login">
-            <button @click="fillCredentials('Team 5.0', '0U1gjAk4IG')">Team 5.0</button>
-            <button @click="fillCredentials('Team 5.1', '0U1gjAk4IG')">Team 5.1</button>
-            <button @click="fillCredentials('Team 5.2', '0U1gjAk4IG')">Team 5.2</button>
-            <button @click="fillCredentials('Team 5.3', '0U1gjAk4IG')">Team 5.3</button>
-            <button @click="fillCredentials('Team 5.4', '0U1gjAk4IG')">Team 5.4</button>
-        </div>
     </div>
 </template>
 
@@ -42,10 +33,6 @@ export default {
         }
     },
     methods: {
-        fillCredentials(login, password) {
-            this.login = login;
-            this.password = password;
-        },
         submitForm() {
             API.CreateToken(this.login, this.password).then(res => {
                 this.$store.commit('setAuthentication', res.data);

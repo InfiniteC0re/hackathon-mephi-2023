@@ -24,23 +24,31 @@ const HOST = "http://92.51.44.167:8080";
 
 function updateSprintInfo(headers) {
     return new Promise((resolve, reject) => {
-        fetch(`${HOST}/tasks/executed`, { method: "GET", headers }).then(async (r) => {
-            let tasks = await r.json();
+        fetch(`${HOST}/tasks/in-progress`, { method: "GET", headers }).then(async (r) => {
+            let inProgressTasks = await r.json();
 
-            for (let i = 0; i < tasks.length; i++) {
-                let task = tasks[i];
-                let day = Math.ceil((new Date(task.executed_ts) - new Date(task.in_progress_ts)) / (1000 * 60 * 60) / 24) - 1;
-
-                if (!sprintInfo.days[day]) {
-                    sprintInfo.days[day] = [];
-                }
-
-                if (!sprintInfo.days[day].find(x => x.id == task.id)) {
-                    sprintInfo.days[day].push(task);
-                }
+            if (inProgressTasks.length == 0) {
+                sprintInfo.isStarted = false;
             }
 
-            resolve();
+            fetch(`${HOST}/tasks/executed`, { method: "GET", headers }).then(async (r) => {
+                let tasks = await r.json();
+    
+                for (let i = 0; i < tasks.length; i++) {
+                    let task = tasks[i];
+                    let day = Math.ceil((new Date(task.executed_ts) - new Date(task.in_progress_ts)) / (1000 * 60 * 60) / 24) - 1;
+    
+                    if (!sprintInfo.days[day]) {
+                        sprintInfo.days[day] = [];
+                    }
+    
+                    if (!sprintInfo.days[day].find(x => x.id == task.id)) {
+                        sprintInfo.days[day].push(task);
+                    }
+                }
+    
+                resolve();
+            }).catch(reject);
         }).catch(reject);
     });
 }
