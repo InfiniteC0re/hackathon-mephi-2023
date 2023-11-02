@@ -48,5 +48,6 @@ export default {
     GetTasks: async (token) => await _requestGET(ENDPOINTS.API1.TASKS(), _generateAuthHeaders(token)),
     GetPriorities: async (token) => await _requestGET(ENDPOINTS.API1.PRIORITIES(), _generateAuthHeaders(token)),
     GetPersonal: async (token) => await _requestGET(ENDPOINTS.API1.PERSONAL(), _generateAuthHeaders(token)),
+    GetTeamSpeed: async () => await _requestGET(ENDPOINTS.API1.TEAM_SPEED()),
     Logout: async (token) => await _requestPOST(ENDPOINTS.API1.LOGOUT(), null, _generateAuthHeaders(token)),
 }

@@ -27,6 +27,7 @@ function fetchTasks(state, obj) {
     API.GetStatuses(state.authToken).then(async res => {
         state.statuses = res.data;
         await updateTasks(state, obj);
+        state.teamSpeed = (await API.GetTeamSpeed()).data.speed;
         state.gotStatuses = true;
     })
 }
