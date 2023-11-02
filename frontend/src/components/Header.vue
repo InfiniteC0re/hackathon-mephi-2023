@@ -3,24 +3,27 @@
         <h1>Задачник</h1>
 
         <div class="profile" v-if="isAuthorized">
-            <div class="sprint-status">
-                <div class="cirle"></div>
-                <div class="text">Спринт запущен</div>
+            <div class="sprint-status" :class="{ 'active': inProgressTasks.length > 0 }">
+                <div class="circle"></div>
+                <div class="text">
+                    <p>{{ sprintStatusText }}</p>
+                    <p>Скорость: {{ usedSize }} / {{ maxSize }}</p>
+                </div>
             </div>
             <button @click="isMenuOpened = !isMenuOpened">
                 <i class="fa-solid fa-cog"></i>
                 Управление
             </button>
             <div class="menu" v-if="isMenuOpened">
-                <button @click="startSprint">
+                <button @click="startSprint" >
                     <i class="fa-solid fa-play"></i>
                     Обычный спринт
                 </button>
-                <button @click="fastSprint">
+                <button @click="fastSprint" >
                     <i class="fa-solid fa-hourglass-start"></i>
                     Быстрый спринт
                 </button>
-                <button @click="resetSprint">
+                <button @click="resetSprint" >
                     <i class="fa-solid fa-power-off"></i>
                     Сброс спринта
                 </button>
@@ -46,7 +49,29 @@ export default {
     computed: {
         isAuthorized() {
             return this.$store.state.isAuthorized;
-        }
+        },
+        inProgressTasks() {
+            return this.$store.state.tasks.filter(x => x.status.status_en == "in-progress");
+        },
+        plannedTasks() {
+            return this.$store.state.tasks.filter(x => x.status.status_en == "planned" || x.status.status_en == "assigned" || x.status.status_en == "in-progress");
+        },
+        isSprintActive() {
+            return this.plannedTasks.length > 0;
+        },
+        usedSize() {
+            return this.plannedTasks.reduce((sum, val) => sum + val.supposed_size, 0);
+        },
+        maxSize() {
+            return 100;
+        },
+        sprintStatusText() {
+            if (this.isSprintActive) {
+                return "Спринт запущен";
+            } else {
+                return "Спринт остановлен";
+            }
+        },
     },
     methods: {
         startSprint() {
@@ -101,6 +126,35 @@ export default {
         .sprint-status {
             display: flex;
             align-items: center;
+            font-weight: 100;
+            margin-right: 16px;
+            opacity: 0.7;
+            font-size: 15px;
+            transition: opacity 0.1s;
+            line-height: 18px;
+
+            p:nth-last-child(1) {
+                color: rgba(255, 255, 255, .5);
+                font-size: 13px;
+            }
+
+            .circle {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                margin-right: 12px;
+                background: rgb(248, 81, 73);
+                filter: drop-shadow(0px 0px 6px rgb(248, 81, 73));
+            }
+
+            &.active {
+                opacity: 1.0;
+
+                .circle {
+                    background: rgb(68, 230, 79);
+                    filter: drop-shadow(0px 0px 6px rgb(68, 230, 79));
+                }
+            }
         }
 
         button {
@@ -120,7 +174,7 @@ export default {
             50% {
                 opacity: 0.1;
             }
-            
+
             100% {
                 opacity: 1;
                 transform: translateY(0);

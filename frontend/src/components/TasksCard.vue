@@ -1,5 +1,5 @@
 <template>
-    <div class="tasks-card-wrap">
+    <div class="tasks-card-wrap" :class="{'highlight': highlight}">
         <div class="header">
             <div class="title">
                 <h3>{{ caption }} <span>{{ tasks.length }}</span></h3>
@@ -50,6 +50,7 @@ export default {
         canAssignPersonal: Boolean,
         canAddNew: Boolean,
         canDelete: Boolean,
+        highlight: Boolean
     },
     data: () => ({
         mounted: false,
@@ -124,8 +125,6 @@ export default {
                         return b.supposed_size - a.supposed_size;
                     }
                 }
-
-                return 0;
             });
         },
         hasScroll() {
@@ -150,6 +149,11 @@ export default {
     max-width: 345px;
     border-radius: 8px;
     padding: 12px;
+
+    &.highlight {
+        border-color: rgba(107, 36, 32, 0.6);
+        background: rgba(10, 3, 3, 0.8);
+    }
 
     .header {
         font-size: 1rem;

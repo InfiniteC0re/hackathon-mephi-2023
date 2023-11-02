@@ -5,6 +5,7 @@
             :canAddNew="status.status_en == 'created'"
             :canDelete="status.status_en != 'executed'"
             :caption="status.status_ru"
+            :highlight="(status.status_en == 'planned' || status.status_en == 'assigned') && usedSize > maxSize"
             :filter="(task) => task.status.id == status.id"
         />
     </div>
@@ -28,7 +29,16 @@ export default {
         },
         gotStatuses() {
             return this.$store.state.gotStatuses;
-        }
+        },
+        inProgressTasks() {
+            return this.$store.state.tasks.filter(x => x.status.status_en == "planned" || x.status.status_en == "assigned");
+        },
+        usedSize() {
+            return this.inProgressTasks.reduce((sum, val) => sum + val.supposed_size, 0);
+        },
+        maxSize() {
+            return 100;
+        },
     },
     mounted() {
         let redirectToLogin = !this.$store.state.authToken;
