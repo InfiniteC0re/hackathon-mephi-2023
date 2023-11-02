@@ -133,6 +133,7 @@ export default {
             border-radius: 8px;
             backdrop-filter: blur(24px);
             padding: 8px;
+            z-index: 1;
 
             button {
                 width: 100%;

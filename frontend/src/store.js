@@ -67,12 +67,12 @@ export default () => {
                 });
             },
             resetSprint(state, obj) {
-                API.StartSprint(state.authToken).then((res) => {
+                API.ResetSprint(state.authToken).then((res) => {
                     fetchTasks(state, obj);
                 });
             },
             fastForwardSprint(state, obj) {
-                API.StartSprint(state.authToken).then((res) => {
+                API.FastForwardSprint(state.authToken).then((res) => {
                     fetchTasks(state, obj);
                 });
             },
