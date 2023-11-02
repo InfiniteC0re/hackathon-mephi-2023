@@ -10,6 +10,7 @@ export default {
         TASK_ASSIGN: () => BASE_ADDRESS1 + "/task/assign",
         TASK_CREATE: () => BASE_ADDRESS1 + "/task/create",
         TASK_DELETE: () => BASE_ADDRESS1 + "/task/delete",
+        TASK_PLAN: () => BASE_ADDRESS1 + "/task/plan",
         SPRINT_START: () => BASE_ADDRESS1 + "/sprint/start",
         SPRINT_RESET: () => BASE_ADDRESS1 + "/sprint/reset",
         SPRINT_FAST_FORWARD: () => BASE_ADDRESS1 + "/sprint/fast-forward",
