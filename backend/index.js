@@ -176,7 +176,9 @@ app.get("/sprint/results", (req, res) => {
 })
 
 app.get("/team/speed", (req, res) => {
-    res.send(sprintInfo.speedLimit.toString());
+    res.send({ speed: sprintInfo.speedLimit });
 });
 
-app.listen(8080);
+app.listen(8080, () => {
+    console.log(`Server has been started!`);
+});
