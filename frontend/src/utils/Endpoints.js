@@ -11,6 +11,7 @@ export default {
         TASK_CREATE: () => BASE_ADDRESS1 + "/task/create",
         TASK_DELETE: () => BASE_ADDRESS1 + "/task/delete",
         TASK_PLAN: () => BASE_ADDRESS1 + "/task/plan",
+        TEAM_SPEED: () => BASE_ADDRESS2 + "/team/speed",
         SPRINT_STATUS: () => BASE_ADDRESS2 + "/sprint/status",
         SPRINT_RESULTS: () => BASE_ADDRESS2 + "/sprint/results",
         SPRINT_START: () => BASE_ADDRESS2 + "/sprint/start",
