@@ -13,11 +13,11 @@
             <div class="filters" v-if="showFilters">
                 <div class="search-bar">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" v-model="searchPrompt" ref="search">
+                    <input type="text" placeholder="Поиск..." v-model="searchPrompt" ref="search">
                 </div>
                 <div class="sort-panel">
-                    <button :class="{ 'active': sortType == 0 }" @click="sortType = 0">По алфавиту</button>
-                    <button :class="{ 'active': sortType == 1 }" @click="sortType = 1">По дате создания</button>
+                    <button :class="{ 'active': sortType == 0 }" @click="sortType = 0">По приоритету</button>
+                    <button :class="{ 'active': sortType == 1 }" @click="sortType = 1">По размеру</button>
                     <button class="squared" @click="sortOrder = (sortOrder + 1) % 2">
                         <i class="fa-solid fa-sort-up" v-if="sortOrder == 0"></i>
                         <i class="fa-solid fa-sort-down" v-else></i>
@@ -26,7 +26,13 @@
             </div>
         </div>
         <div class="cards" ref="cards" :class="{ 'scroll': hasScroll }">
-            <TaskCard v-for="task in tasks" :task="task" :canDelete="canDelete" :canAssign="canAddNew" />
+            <TaskCard
+                v-for="task in tasks" @click="() => console.log(task)"
+                :task="task"
+                :canDelete="canDelete"
+                :canAssign="canAssignPersonal"
+                :canPlan="canAddNew"
+            />
         </div>
     </div>
 </template>
@@ -41,6 +47,7 @@ export default {
     props: {
         caption: String,
         filter: Function,
+        canAssignPersonal: Boolean,
         canAddNew: Boolean,
         canDelete: Boolean,
     },
@@ -48,7 +55,7 @@ export default {
         mounted: false,
         showFilters: false,
         sortType: 0,
-        sortOrder: 0,
+        sortOrder: 1,
         searchPrompt: ""
     }),
     methods: {
@@ -63,19 +70,35 @@ export default {
                             this.$store.commit('createTask', {
                                 title: fields[0].value,
                                 description: fields[1].value,
+                                size: fields[2].variants[fields[2].value],
+                                priority: this.$store.state.priorities[fields[3].value].id
                             });
                         }
                     }
                 },
                 fields: [{
+                    type: "input",
                     hint: "Название задачи",
                     placeholder: "Название",
                     value: ""
                 },
                 {
+                    type: "input",
                     hint: "Описание задачи",
                     placeholder: "Описание",
                     value: ""
+                },
+                {
+                    type: "variants",
+                    hint: "Выбор сложности",
+                    variants: [1, 2, 3, 5, 8, 13, 21, 34],
+                    value: 0
+                },
+                {
+                    type: "variants",
+                    hint: "Приоритет",
+                    variants: this.$store.state.priorities.map(item => item.priority_ru),
+                    value: 1
                 }]
             });
         }
@@ -90,17 +113,15 @@ export default {
             }).sort((a, b) => {
                 if (this.sortType == 0) {
                     if (this.sortOrder == 0) {
-                        if (a.title < b.title) return 1;
-                        if (a.title > b.title) return -1;
+                        return a.priority.id - b.priority.id;
                     } else {
-                        if (a.title < b.title) return -1;
-                        if (a.title > b.title) return 1;
+                        return b.priority.id - a.priority.id;
                     }
                 } else {
                     if (this.sortOrder == 0) {
-                        return new Date(a.created_ts) - new Date(b.created_ts);
+                        return a.supposed_size - b.supposed_size;
                     } else {
-                        return new Date(b.created_ts) - new Date(a.created_ts);
+                        return b.supposed_size - a.supposed_size;
                     }
                 }
 
@@ -233,8 +254,11 @@ export default {
     }
 
     .cards {
-        display: grid;
+        display: flex;
+        flex-direction: column;
         overflow: auto;
+        overflow-x: hidden;
+        max-width: 100%;
         gap: 8px;
 
         &.scroll {

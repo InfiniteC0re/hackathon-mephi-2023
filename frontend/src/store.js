@@ -22,6 +22,7 @@ export default () => {
                 statuses: [],
                 tasks: [],
                 personal: [],
+                priorities: [],
                 gotStatuses: false,
                 overlay: {}
             }
@@ -30,13 +31,23 @@ export default () => {
             getStatuses(state, obj) {
                 fetchTasks(state, obj);
             },
+            getPriorities(state, obj) {
+                API.GetPriorities(state.authToken).then((res) => {
+                    state.priorities = res.data;
+                });
+            },
             getPersonal(state, obj) {
                 API.GetPersonal(state.authToken).then((res) => {
                     state.personal = res.data;
                 });
             },
             createTask(state, obj) {
-                API.CreateTask(state.authToken, obj.title, obj.description).then((res) => {
+                API.CreateTask(state.authToken, obj.title, obj.description, obj.size, obj.priority).then((res) => {
+                    fetchTasks(state, obj);
+                });
+            },
+            planTask(state, obj) {
+                API.PlanTask(state.authToken, obj.id).then((res) => {
                     fetchTasks(state, obj);
                 });
             },
@@ -47,6 +58,21 @@ export default () => {
             },
             deleteTask(state, obj) {
                 API.DeleteTask(state.authToken, obj.id).then((res) => {
+                    fetchTasks(state, obj);
+                });
+            },
+            startSprint(state, obj) {
+                API.StartSprint(state.authToken).then((res) => {
+                    fetchTasks(state, obj);
+                });
+            },
+            resetSprint(state, obj) {
+                API.StartSprint(state.authToken).then((res) => {
+                    fetchTasks(state, obj);
+                });
+            },
+            fastForwardSprint(state, obj) {
+                API.StartSprint(state.authToken).then((res) => {
                     fetchTasks(state, obj);
                 });
             },

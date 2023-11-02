@@ -1,6 +1,7 @@
 <template>
     <div class="cards-wrap" v-if="gotStatuses">
         <TasksCard v-for="status in statuses"
+            :canAssignPersonal="status.status_en == 'planned'"
             :canAddNew="status.status_en == 'created'"
             :canDelete="status.status_en != 'executed'"
             :caption="status.status_ru"
@@ -40,6 +41,7 @@ export default {
                 callbackSuccess: () => {
                     this.$store.commit('getStatuses');
                     this.$store.commit('getPersonal');
+                    this.$store.commit('getPriorities');
                 }
             });
         } else {

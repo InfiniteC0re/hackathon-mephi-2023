@@ -10,10 +10,14 @@ export default {
         TASK_ASSIGN: () => BASE_ADDRESS1 + "/task/assign",
         TASK_CREATE: () => BASE_ADDRESS1 + "/task/create",
         TASK_DELETE: () => BASE_ADDRESS1 + "/task/delete",
+        SPRINT_START: () => BASE_ADDRESS1 + "/sprint/start",
+        SPRINT_RESET: () => BASE_ADDRESS1 + "/sprint/reset",
+        SPRINT_FAST_FORWARD: () => BASE_ADDRESS1 + "/sprint/fast-forward",
         TASKS: () => BASE_ADDRESS1 + "/tasks",
         TASKS_STATUS: (status) => BASE_ADDRESS1 + "/tasks/" + status,
         STATUSES: () => BASE_ADDRESS1 + "/statuses",
         PERSONAL: () => BASE_ADDRESS1 + "/personal",
+        PRIORITIES: () => BASE_ADDRESS1 + "/priorities",
     },
     API2: {
         
