@@ -3,6 +3,13 @@ import express from "express";
 
 const app = express();
 
+app.all('/*', function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Credentials", "true");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With, Authorization");
+    next();
+});
+
 const sprintInfo = {
     speedLimit: 100,
     isStarted: false,
@@ -14,10 +21,6 @@ const sprintInfo = {
 
 const VIRTUAL_DAY_TO_MINUTES = 2.6;
 const HOST = "http://92.51.44.167:8080";
-
-app.get("/sprint", (req, res) => {
-    res.send(sprintInfo.isStarted);
-});
 
 function updateSprintInfo(headers) {
     return new Promise((resolve, reject) => {
@@ -71,6 +74,10 @@ function resetSprint(headers) {
     });
 }
 
+app.get("/sprint/status", (req, res) => {
+    res.send({ started: sprintInfo.isStarted });
+});
+
 app.post("/sprint/start", (req, res) => {
     const headers = {
         Authorization: req.headers.authorization
@@ -93,8 +100,8 @@ app.post("/sprint/start", (req, res) => {
                             sprintInfo.isStarted = true;
                             sprintInfo.totalTasks = allPlannedTasks.length;
 
-                            sprintInfo.updateInterval = setInterval(() => updateSprintInfo(headers), 5000);
-                            sprintInfo.setTimeout = setInterval(() => {
+                            sprintInfo.updateInterval = setInterval(() => updateSprintInfo(headers), 4000);
+                            sprintInfo.setTimeout = setTimeout(() => {
                                 clearInterval(sprintInfo.updateInterval);
                                 sprintInfo.updateInterval = null;
                                 sprintInfo.setTimeout = null;

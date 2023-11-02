@@ -7,7 +7,16 @@ function updateTasks(state, obj) {
     return new Promise((resolve, reject) => {
         API.GetTasks(state.authToken).then(async res => {
             state.tasks = res.data;
-            resolve();
+
+            API.GetSprintStatus().then((res) => {
+                state.sprintStarted = res.data.started;
+    
+                API.GetSprintResults().then((res) => {
+                    state.sprintResults = res.data;
+                    resolve();
+                    console.log(state.sprintStarted, state.sprintResults);
+                });
+            });
         })
     });
 }
@@ -28,11 +37,15 @@ export default () => {
             return {
                 authToken: session.getAuthToken(),
                 isAuthorized: false,
+                teamSpeed: 100,
                 statuses: [],
                 tasks: [],
                 personal: [],
                 priorities: [],
                 gotStatuses: false,
+                sprintStarted: false,
+                sprintResults: {},
+                sprintOverlay: false,
                 overlay: {}
             }
         },

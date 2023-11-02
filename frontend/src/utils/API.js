@@ -33,6 +33,8 @@ export default {
     GetTest: async () => await _requestGET(ENDPOINTS.API1.TEST()),
     PostTest: async () => await _requestPOST(ENDPOINTS.API1.TEST()),
     CreateToken: async (username, password) => await _requestPOST(ENDPOINTS.API1.TOKEN(), { username, password }),
+    GetSprintStatus: async () => await _requestGET(ENDPOINTS.API1.SPRINT_STATUS()),
+    GetSprintResults: async () => await _requestGET(ENDPOINTS.API1.SPRINT_RESULTS()),
     StartSprint: async (token) => await _requestPOST(ENDPOINTS.API1.SPRINT_START(), null, _generateAuthHeaders(token)),
     ResetSprint: async (token) => await _requestPOST(ENDPOINTS.API1.SPRINT_RESET(), null, _generateAuthHeaders(token)),
     FastForwardSprint: async (token) => await _requestPOST(ENDPOINTS.API1.SPRINT_FAST_FORWARD(), null, _generateAuthHeaders(token)),

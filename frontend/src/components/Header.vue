@@ -3,11 +3,11 @@
         <h1>Задачник</h1>
 
         <div class="profile" v-if="isAuthorized">
-            <div class="sprint-status" :class="{ 'active': inProgressTasks.length > 0 }">
+            <div class="sprint-status" :class="{ 'active': isSprintActive }" @click="openAnalytics">
                 <div class="circle"></div>
                 <div class="text">
                     <p>{{ sprintStatusText }}</p>
-                    <p>Скорость: {{ usedSize }} / {{ maxSize }}</p>
+                    <p :class="{ 'error': usedSize > teamSpeed }">Сложность: {{ usedSize }} / {{ teamSpeed }}</p>
                 </div>
             </div>
             <button @click="isMenuOpened = !isMenuOpened">
@@ -15,15 +15,19 @@
                 Управление
             </button>
             <div class="menu" v-if="isMenuOpened">
-                <button @click="startSprint" >
+                <button @click="openAnalytics" :disabled="!hasTasksInSprint">
+                    <i class="fa-solid fa-chart-simple"></i>
+                    Отчет по последнему спринту
+                </button>
+                <button @click="startSprint" :disabled="usedSize > teamSpeed">
                     <i class="fa-solid fa-play"></i>
                     Обычный спринт
                 </button>
-                <button @click="fastSprint" >
+                <button @click="fastSprint" :disabled="usedSize > teamSpeed">
                     <i class="fa-solid fa-hourglass-start"></i>
                     Быстрый спринт
                 </button>
-                <button @click="resetSprint" >
+                <button @click="resetSprint">
                     <i class="fa-solid fa-power-off"></i>
                     Сброс спринта
                 </button>
@@ -57,13 +61,16 @@ export default {
             return this.$store.state.tasks.filter(x => x.status.status_en == "planned" || x.status.status_en == "assigned" || x.status.status_en == "in-progress");
         },
         isSprintActive() {
-            return this.plannedTasks.length > 0;
+            return this.$store.state.sprintStarted;
         },
         usedSize() {
             return this.plannedTasks.reduce((sum, val) => sum + val.supposed_size, 0);
         },
-        maxSize() {
-            return 100;
+        teamSpeed() {
+            return this.$store.state.teamSpeed;
+        },
+        hasTasksInSprint() {
+            return this.$store.state.sprintResults.totalTasks;
         },
         sprintStatusText() {
             if (this.isSprintActive) {
@@ -97,6 +104,12 @@ export default {
                 }
             });
         },
+        openAnalytics() {
+            if (this.hasTasksInSprint) {
+                this.$store.state.sprintOverlay = true;
+                this.isMenuOpened = false;
+            }
+        }
     },
 }
 </script>
@@ -132,10 +145,21 @@ export default {
             font-size: 15px;
             transition: opacity 0.1s;
             line-height: 18px;
+            cursor: pointer;
+
+            &:hover {
+                opacity: 1;
+            }
 
             p:nth-last-child(1) {
                 color: rgba(255, 255, 255, .5);
                 font-size: 13px;
+
+                &.error {
+                    color: rgb(255, 22, 88);
+                    font-weight: 500;
+                    text-decoration: underline;
+                }
             }
 
             .circle {
@@ -148,8 +172,6 @@ export default {
             }
 
             &.active {
-                opacity: 1.0;
-
                 .circle {
                     background: rgb(68, 230, 79);
                     filter: drop-shadow(0px 0px 6px rgb(68, 230, 79));

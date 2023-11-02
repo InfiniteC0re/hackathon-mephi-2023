@@ -1,5 +1,5 @@
 const BASE_ADDRESS1 = "http://92.51.44.167:8080";
-// const BASE_ADDRESS2 = "http://hackathon.hlsr.tk:8000"; // TODO: replace ip before deploying
+const BASE_ADDRESS2 = "http://localhost:8080"; 
 
 export default {
     API1: {
@@ -11,16 +11,15 @@ export default {
         TASK_CREATE: () => BASE_ADDRESS1 + "/task/create",
         TASK_DELETE: () => BASE_ADDRESS1 + "/task/delete",
         TASK_PLAN: () => BASE_ADDRESS1 + "/task/plan",
-        SPRINT_START: () => BASE_ADDRESS1 + "/sprint/start",
-        SPRINT_RESET: () => BASE_ADDRESS1 + "/sprint/reset",
-        SPRINT_FAST_FORWARD: () => BASE_ADDRESS1 + "/sprint/fast-forward",
+        SPRINT_STATUS: () => BASE_ADDRESS2 + "/sprint/status",
+        SPRINT_RESULTS: () => BASE_ADDRESS2 + "/sprint/results",
+        SPRINT_START: () => BASE_ADDRESS2 + "/sprint/start",
+        SPRINT_RESET: () => BASE_ADDRESS2 + "/sprint/reset",
+        SPRINT_FAST_FORWARD: () => BASE_ADDRESS2 + "/sprint/fast-forward",
         TASKS: () => BASE_ADDRESS1 + "/tasks",
         TASKS_STATUS: (status) => BASE_ADDRESS1 + "/tasks/" + status,
         STATUSES: () => BASE_ADDRESS1 + "/statuses",
         PERSONAL: () => BASE_ADDRESS1 + "/personal",
         PRIORITIES: () => BASE_ADDRESS1 + "/priorities",
-    },
-    API2: {
-        
     }
 }

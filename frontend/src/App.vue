@@ -2,6 +2,7 @@
   <div class="content-wrap" v-if="isReady">
     <Header />
     <Overlay />
+    <SprintAnalytics />
     <router-view></router-view>
   </div>
   <div class="loading-wrap" v-else>
@@ -13,12 +14,14 @@
 import LoadingIndicator from "@/components/LoadingIndicator.vue"
 import Header from "@/components/Header.vue"
 import Overlay from "./components/Overlay.vue";
+import SprintAnalytics from "./components/SprintAnalytics.vue";
 
 export default {
   components: {
     Header,
     LoadingIndicator,
-    Overlay
+    Overlay,
+    SprintAnalytics
   },
   data: () => ({
     isReady: false

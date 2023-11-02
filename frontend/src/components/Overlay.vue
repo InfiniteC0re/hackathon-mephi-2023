@@ -62,6 +62,22 @@ export default {
     align-items: center;
     z-index: 9999;
 
+    @keyframes overlay-form-appear {
+        0% {
+            opacity: 0;
+            transform: translateY(100%);
+        }
+
+        50% {
+            opacity: 0.2;
+        }
+
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
     .overlay-form {
         max-width: 400px;
         width: 70%;
@@ -71,6 +87,7 @@ export default {
         background: var(--background-color);
         display: flex;
         flex-direction: column;
+        animation: overlay-form-appear 0.3s;
 
         h2 {
             margin-bottom: 8px;
