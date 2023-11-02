@@ -17,4 +17,10 @@ const router = createRouter({
     ]
 });
 
-createApp(App).use(router).use(createStore()).mount('#app');
+const store = createStore();
+
+setInterval(() => {
+    store.commit('updateSeamlessly');
+}, 8000);
+
+createApp(App).use(router).use(store).mount('#app');

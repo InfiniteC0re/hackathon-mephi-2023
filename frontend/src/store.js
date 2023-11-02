@@ -3,12 +3,21 @@ import API from "./utils/api";
 
 import { createStore } from 'vuex';
 
+function updateTasks(state, obj) {
+    return new Promise((resolve, reject) => {
+        API.GetTasks(state.authToken).then(async res => {
+            state.tasks = res.data;
+            resolve();
+        })
+    });
+}
+
 function fetchTasks(state, obj) {
     state.gotStatuses = false;
 
     API.GetStatuses(state.authToken).then(async res => {
         state.statuses = res.data;
-        state.tasks = (await API.GetTasks(state.authToken)).data;
+        await updateTasks(state, obj);
         state.gotStatuses = true;
     })
 }
@@ -28,6 +37,9 @@ export default () => {
             }
         },
         mutations: {
+            updateSeamlessly(state, obj) {
+                updateTasks(state, obj);
+            },
             getStatuses(state, obj) {
                 fetchTasks(state, obj);
             },

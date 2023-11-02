@@ -3,6 +3,10 @@
         <h1>Задачник</h1>
 
         <div class="profile" v-if="isAuthorized">
+            <div class="sprint-status">
+                <div class="cirle"></div>
+                <div class="text">Спринт запущен</div>
+            </div>
             <button @click="isMenuOpened = !isMenuOpened">
                 <i class="fa-solid fa-cog"></i>
                 Управление
@@ -93,6 +97,11 @@ export default {
         margin-left: auto;
         text-align: left;
         position: relative;
+
+        .sprint-status {
+            display: flex;
+            align-items: center;
+        }
 
         button {
             font-weight: bold;
